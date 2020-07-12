@@ -1,43 +1,59 @@
-import React from 'react'
-import { LayersHalf } from 'react-bootstrap-icons';
-import Container from 'react-bootstrap/Container'
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
-import Nav from 'react-bootstrap/Nav'
-import Navbar from 'react-bootstrap/Navbar'
-import Card from 'react-bootstrap/Card'
-import Form from 'react-bootstrap/Form'
-import Button from 'react-bootstrap/Button'
-
-
+import React, { useState, useEffect } from 'react'
+import { BrowserRouter, Switch, Route } from 'react-router-dom'
+import createContext from './components/auth/UserContext'
+import Axios from 'axios'
+import Header from './components/layout/Header'
+import Home from './components/pages/Home'
+import Login from './components/auth/Login'
+import Register from './components/auth/Register'
 
 function App() {
+  const [userData, setUserData] = useState({
+    token: undefined,
+    user: undefined
+  })
+
+  useEffect(() => {
+    const loginCheck = async () => {
+      let token = localStorage.getItem("auth-token")
+      if(token === null) {
+        localStorage.setItem("auth-token", "")
+        token = ""
+      }
+
+      const tokenResponse = await Axios.post(
+        "http://localhost:8000/users/validToken",
+        null,
+        { header: { "x-auth-token": token } }
+      )
+
+      if(tokenResponse.data) {
+        const userResponse = await Axios.get(
+          "http://localhost:8000/users/",
+          { header: { "x-auth-token": token } }
+        )
+        setUserData({
+          token,
+          user: userResponse.data
+        })
+      }
+    }
+
+    loginCheck()
+  }, [])
+
   return (
     <>
-    <header>
-      <Navbar bg="info" fixed="top" expand="lg">
-        <Container fluid>
-          <Navbar.Brand className="text-white h6 mb-0" href="/">
-            <LayersHalf color="white" className="mr-2" size="32" /> Login & Stuff
-          </Navbar.Brand>
-          <Navbar.Toggle />
-          <Navbar.Collapse>
-            <Nav className="ml-auto">
-              <Nav.Link className="text-white" href="/users/register">Register</Nav.Link>
-              <Nav.Link className="btn btn-warning text-white px-5" href="/users/login">Login</Nav.Link>
-            </Nav>
-          </Navbar.Collapse>
-        </Container>
-      </Navbar>
-    </header>
-
-    <Container as="main" className="mt-4 pt-5" fluid>
-      <Col as="hgroup">
-        <h1>h1 HTML5 Kitchen Sink</h1>
-      </Col>
-      <section>
-      </section>
-    </Container>
+    <BrowserRouter>
+      <createContext.Provider value={{userData, setUserData}}>
+        <Header />
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route path="/login" component={Login} />
+          <Route path="/register" component={Register} />
+        </Switch>
+      </createContext.Provider>
+    </BrowserRouter>
     </>
   );
 }
