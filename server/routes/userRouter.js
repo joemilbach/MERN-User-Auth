@@ -9,7 +9,7 @@ router.post("/register", async (req, res) => {
     const { email, password, passwordCheck, displayName } = req.body
 
     if(!email || !password || !passwordCheck) {
-      return res.status(400).json({msg: "Missing required field."})
+      return res.status(400).json({msg: "Missing required fields."})
     }
     if(password.length < 5) {
       return res.status(400).json({msg: "Minimum of 5 character in password"})
@@ -70,7 +70,6 @@ router.post("/login", async (req, res) => {
       user: {
         id: user._id,
         displayName: user.displayName,
-        email: user.email,
       }
     })
   } catch (error) {

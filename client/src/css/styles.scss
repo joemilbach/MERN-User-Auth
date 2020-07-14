@@ -4,6 +4,24 @@
   "custom",
   "bootstrap-components";
 
+/* General */
+
+h1 {
+  color: $gray-800;
+}
+
+.alert {
+  display: flex;
+  align-items: center;
+}
+
+.btn {
+  padding: 0.375rem 2rem;
+}
+
+.form-control {
+  padding: 0.375rem 1rem;
+}
 
 /* Header */
 
