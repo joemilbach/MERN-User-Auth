@@ -6,6 +6,7 @@ import Header from './components/layout/Header'
 import Home from './components/pages/Home'
 import Login from './components/auth/Login'
 import Register from './components/auth/Register'
+import Settings from './components/auth/Settings'
 
 function App() {
   const [userData, setUserData] = useState({
@@ -15,11 +16,7 @@ function App() {
 
   useEffect(() => {
     const loginCheck = async () => {
-      let token = localStorage.getItem("auth-token")
-      if(token === null) {
-        localStorage.setItem("auth-token", "")
-        token = ""
-      }
+      const token = ""
 
       const tokenResponse = await Axios.post(
         "http://localhost:8000/users/validToken",
@@ -51,6 +48,7 @@ function App() {
           <Route exact path="/" component={Home} />
           <Route path="/login" component={Login} />
           <Route path="/register" component={Register} />
+          <Route path="/settings" component={Settings} />
         </Switch>
       </createContext.Provider>
     </BrowserRouter>

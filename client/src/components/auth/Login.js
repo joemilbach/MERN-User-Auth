@@ -31,7 +31,6 @@ export default function Login() {
         user: loginResponse.data.user
       })
 
-      localStorage.setItem("auth-token", loginResponse.data.token)
       history.push("/")
     } catch (error) {
       error.response.data.msg && setAlert(error.response.data.msg)

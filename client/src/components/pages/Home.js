@@ -14,8 +14,6 @@ export default function Home() {
     }
   })
 
-
-
   return (
     <>
     <Container as="main" className="home" fluid>

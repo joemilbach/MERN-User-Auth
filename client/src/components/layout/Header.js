@@ -12,6 +12,7 @@ export default function Header() {
 
   const register = () => history.push("/register")
   const login = () => history.push("/login")
+  const settings = () => history.push("/settings")
   const logout = () => {
     setUserData({
       token: undefined,
@@ -34,6 +35,7 @@ export default function Header() {
               <Navbar.Text className="text-white mr-4">
                 <strong>Logged in as:</strong> { userData.user.displayName }
               </Navbar.Text>
+              <button onClick={settings} className="nav-link btn btn-outline-warning text-white px-5 mr-3" to="/register">Settings</button>
               <button onClick={logout} className="nav-link btn btn-warning text-white px-5" to="/logout">Logout</button>
             </>
             ) : (

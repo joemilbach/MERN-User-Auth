@@ -13,6 +13,7 @@ export default function Register() {
   const [password, setPassword] = useState()
   const [passwordCheck, setPasswordCheck] = useState()
   const [displayName, setDisplayName] = useState()
+  const [autoLogin, setAutoLogin] = useState()
   const [alert, setAlert] = useState()
 
   const { setUserData } = useContext(createContext)
@@ -22,7 +23,8 @@ export default function Register() {
     e.preventDefault()
 
     try {
-      const newUser = { email, password, passwordCheck, displayName }
+      const newUser = { email, password, passwordCheck, displayName, autoLogin }
+
       await Axios.post(
         "http://localhost:8000/users/register",
         newUser
@@ -37,7 +39,6 @@ export default function Register() {
         user: loginResponse.data.user
       })
 
-      localStorage.setItem("auth-token", loginResponse.data.token)
       history.push("/")
     } catch (error) {
       error.response.data.msg && setAlert(error.response.data.msg)
@@ -67,12 +68,16 @@ export default function Register() {
           <Form.Text className="mt-0 mb-3" muted>
             <em>Your password must be 6 characters long and "Password" and "Confirm Password" fields must match.</em>
           </Form.Text>
-          <Form.Control type="password" placeholder="Password" required onChange={e => setPassword(e.target.value)} />
+          <Form.Control type="password" placeholder="Strong Password" required onChange={e => setPassword(e.target.value)} />
         </Form.Group>
 
         <Form.Group controlId="register-password-confirm">
           <Form.Label className="d-none">Password Confirm<em className="text-info">*</em></Form.Label>
           <Form.Control type="password" placeholder="Confirm Password" required onChange={e => setPasswordCheck(e.target.value)} />
+        </Form.Group>
+
+        <Form.Group>
+          <Form.Check type="switch" id="register-autoLogin" label='Enable "Keep Me Logged In"?' onChange={e => setAutoLogin(e.target.value)} />
         </Form.Group>
 
         <Button variant="warning" className="text-white mt-2 mr-2" type="submit">Register Me</Button> <em className="text-info">*Required fields</em>

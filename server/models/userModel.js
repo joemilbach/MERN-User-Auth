@@ -14,6 +14,9 @@ const userSchema = new mongoose.Schema({
   displayName: {
     type: String
   },
+  autoLogin: {
+    type: Boolean
+  }
 })
 
 module.exports = User = mongoose.model("user", userSchema)
