@@ -12,7 +12,6 @@ export default function Login() {
   const [email, setEmail] = useState()
   const [password, setPassword] = useState()
   const [alert, setAlert] = useState()
-
   const { setUserData } = useContext(createContext)
   const history = useHistory()
 

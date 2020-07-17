@@ -83,41 +83,50 @@ router.post("/login", async (req, res) => {
 router.post("/edit", async (req, res) => {
   try {
     const { id, email, password, passwordCheck, displayName, autoLogin } = req.body
-    const existingUser = await User.findOne({ email: email })
+    const user = await User.findOne({ _id: id })
+    let userUpdates = {}
 
-    if(id != existingUser._id) {
-      return res.status(400).json({msg: "Email already exists"})
+    if(email) {
+      const existingUser = await User.findOne({ email: email })
+      if(existingUser && id !== existingUser) {
+        return res.status(400).json({msg: "Email already used"})
+      }
+      userUpdates.email = email
     }
 
-    if(password.length < 5) {
-      return res.status(400).json({msg: "Minimum of 5 character in password"})
+    if(password) {
+      if(password.length < 5) {
+        return res.status(400).json({msg: "Minimum of 5 character in password"})
+      }
+      if(password !== passwordCheck) {
+        return res.status(400).json({msg: "Password fields do not match"})
+      }
+      const passwordMatch = await bcrypt.compare(password, user.password)
+      if(passwordMatch) {
+        return res.status(400).json({msg: "Password currently being used"})
+      }
+      const salt = await bcrypt.genSalt()
+      const passwordHash = await bcrypt.hash(password, salt)
+      userUpdates.password = passwordHash
     }
-    if(password !== passwordCheck) {
-      return res.status(400).json({msg: "Password fields do not match"})
-    }
-    const salt = await bcrypt.genSalt()
-    const passwordHash = await bcrypt.hash(password, salt)
 
-    if(!displayName) {
-      displayName = email.substring(0, email.lastIndexOf("@"))
+    if(displayName) {
+      if(displayName === "none") {
+        userUpdates.displayName = user.email.substring(0, user.email.lastIndexOf("@"))
+      } else {
+        userUpdates.displayName = displayName
+      }
     }
 
-    const autoLoginRes = typeof(autoLogin) === "undefined" ? false : true
+    userUpdates.autoLogin = autoLogin
 
-    const editedUser = {
-      email,
-      password: passwordHash,
-      displayName,
-      autoLogin: autoLoginRes
-    }
-    const user = await User.findByIdAndUpdate(
+    const userEdited = await User.findByIdAndUpdate(
       id,
-      { $set: editedUser },
-      {
-        new: true,
-    })
+      { $set: userUpdates },
+      { new: true }
+    )
 
-    res.json(user)
+    res.json(userEdited)
   } catch (error) {
     res.status(500).json({error: error.message})
   }

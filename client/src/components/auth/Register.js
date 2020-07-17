@@ -23,7 +23,8 @@ export default function Register() {
     e.preventDefault()
 
     try {
-      const newUser = { email, password, passwordCheck, displayName, autoLogin }
+      const autoLoginRes = typeof(autoLogin) === "undefined" ? false : true
+      const newUser = { email, password, passwordCheck, displayName, autoLogin: autoLoginRes }
 
       await Axios.post(
         "http://localhost:8000/users/register",

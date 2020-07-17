@@ -18,7 +18,6 @@ export default function Header() {
       token: undefined,
       user: undefined
     })
-    localStorage.setItem("auth-token", "")
     history.push("/login")
   }
 
