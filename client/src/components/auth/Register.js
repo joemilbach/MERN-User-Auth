@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import createContext from "./UserContext";
 import Axios from "axios";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import ErrorAlert from "../layout/ErrorAlert";
 import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
@@ -13,14 +13,12 @@ export default function Register() {
   const [password, setPassword] = useState();
   const [passwordCheck, setPasswordCheck] = useState();
   const [displayName, setDisplayName] = useState();
-  const [autoLogin, setAutoLogin] = useState();
   const [alert, setAlert] = useState();
   const { setUserData } = useContext(createContext);
   const history = useHistory();
 
   const submit = async (e) => {
     e.preventDefault();
-
     try {
       const autoLoginRes = typeof autoLogin === "undefined" ? false : true;
       const newUser = {
@@ -30,7 +28,6 @@ export default function Register() {
         displayName,
         autoLogin: autoLoginRes,
       };
-
       await Axios.post("http://localhost:8000/users/register", newUser);
       const loginResponse = await Axios.post(
         "http://localhost:8000/users/login",
@@ -52,7 +49,6 @@ export default function Register() {
       <Col as="hgroup">
         <h1>Register</h1>
       </Col>
-
       <Form className="col-md-8 col-lg-6 mt-3" onSubmit={submit}>
         {alert && <ErrorAlert message={alert} />}
         <Form.Group controlId="register-email">
@@ -102,22 +98,17 @@ export default function Register() {
             onChange={(e) => setPasswordCheck(e.target.value)}
           />
         </Form.Group>
-        <Form.Group>
-          <Form.Check
-            type="switch"
-            id="register-autoLogin"
-            label='Enable "Keep Me Logged In"?'
-            onChange={(e) => setAutoLogin(e.target.value)}
-          />
+        <Form.Group className="d-flex align-items-center justify-content-between pt-3">
+          <span>
+            <Button variant="warning" className="text-white mr-2" type="submit">
+              Register Me
+            </Button>
+            <em className="text-info">*Required fields</em>
+          </span>
+          <em>
+            Already have an account? <Link to="/login">Login</Link>
+          </em>
         </Form.Group>
-        <Button
-          variant="warning"
-          className="text-white mt-2 mr-2"
-          type="submit"
-        >
-          Register Me
-        </Button>{" "}
-        <em className="text-info">*Required fields</em>
       </Form>
     </Container>
   );

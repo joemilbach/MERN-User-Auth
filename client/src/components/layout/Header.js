@@ -9,7 +9,6 @@ import Navbar from "react-bootstrap/Navbar";
 export default function Header() {
   const { userData, setUserData } = useContext(createContext);
   const history = useHistory();
-
   const register = () => history.push("/register");
   const login = () => history.push("/login");
   const settings = () => history.push("/settings");

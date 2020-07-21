@@ -6,7 +6,7 @@ const User = require("../models/userModel");
 
 router.post("/register", async (req, res) => {
   try {
-    const { email, password, passwordCheck, displayName, autoLogin } = req.body;
+    const { email, password, passwordCheck, displayName } = req.body;
 
     if (!email || !password || !passwordCheck) {
       return res.status(400).json({ msg: "Missing required fields." });
@@ -21,7 +21,6 @@ router.post("/register", async (req, res) => {
     }
 
     const existingUser = await User.findOne({ email: email });
-
     if (existingUser) {
       return res.status(400).json({ msg: "Email already exists" });
     }
@@ -30,15 +29,12 @@ router.post("/register", async (req, res) => {
       displayName = email.substring(0, email.lastIndexOf("@"));
     }
 
-    const autoLoginRes = typeof autoLogin === "undefined" ? false : true;
-
     const salt = await bcrypt.genSalt();
     const passwordHash = await bcrypt.hash(password, salt);
     const newUser = User({
       email,
       password: passwordHash,
       displayName,
-      autoLogin: autoLoginRes,
     });
     const savedUser = await newUser.save();
 
@@ -87,14 +83,7 @@ router.post("/login", async (req, res) => {
 
 router.post("/edit", async (req, res) => {
   try {
-    const {
-      id,
-      email,
-      password,
-      passwordCheck,
-      displayName,
-      autoLogin,
-    } = req.body;
+    const { id, email, password, passwordCheck, displayName } = req.body;
     const user = await User.findOne({ _id: id });
     let userUpdates = {};
 
@@ -134,8 +123,6 @@ router.post("/edit", async (req, res) => {
         userUpdates.displayName = displayName;
       }
     }
-
-    userUpdates.autoLogin = autoLogin;
 
     const userEdited = await User.findByIdAndUpdate(
       id,

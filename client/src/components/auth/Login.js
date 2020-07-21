@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import createContext from "./UserContext";
 import Axios from "axios";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import ErrorAlert from "../layout/ErrorAlert";
 import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
@@ -39,7 +39,6 @@ export default function Login() {
       <Col as="hgroup">
         <h1>Login</h1>
       </Col>
-
       <Form className="col-md-8 col-lg-6 mt-3" onSubmit={submit}>
         {alert && <ErrorAlert message={alert} />}
         <Form.Group controlId="login-email">
@@ -50,7 +49,6 @@ export default function Login() {
             onChange={(e) => setEmail(e.target.value)}
           />
         </Form.Group>
-
         <Form.Group controlId="login-password">
           <Form.Label>Password</Form.Label>
           <Form.Control
@@ -59,10 +57,14 @@ export default function Login() {
             onChange={(e) => setPassword(e.target.value)}
           />
         </Form.Group>
-
-        <Button variant="primary" type="submit">
-          Log Me In
-        </Button>
+        <Form.Group className="d-flex align-items-center justify-content-between pt-3">
+          <Button variant="warning" className="text-white mr-2" type="submit">
+            Login
+          </Button>
+          <em>
+            Don't have an account? <Link to="/register">Register</Link>
+          </em>
+        </Form.Group>
       </Form>
     </Container>
   );
