@@ -4,8 +4,10 @@
   "description": "NodeJS + MongoDB API for User Management, Authentication and Registration",
   "license": "MIT",
   "scripts": {
-    "start": "node ./server.js",
-    "start:dev": "nodemon ./server.js"
+    "server": "node ./server.js",
+    "server:dev": "nodemon ./server.js",
+    "client": "cd client && yarn start",
+    "start": "concurrently \"yarn run server:dev\" \"yarn run client\""
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
