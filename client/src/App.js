@@ -1,58 +1,39 @@
-import React, { useState, useEffect } from "react";
-import { BrowserRouter, Switch, Route } from "react-router-dom";
-import createContext from "./components/auth/UserContext";
-import Axios from "axios";
-import Header from "./components/layout/Header";
-import Home from "./components/pages/Home";
-import Login from "./components/auth/Login";
-import Register from "./components/auth/Register";
-import Settings from "./components/auth/Settings";
+import React, { useEffect } from "react";
+import { Router, Route, Switch, Redirect } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+
+import { history, PrivateRoute } from "./utility";
+import { alertActions } from "./actions";
+
+import Header from "./components/Header";
+import HomePage from "./pages/HomePage";
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
 
 function App() {
-  const [userData, setUserData] = useState({
-    token: undefined,
-    user: undefined,
-  });
+  const alert = useSelector((state) => state.alert);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    const loginCheck = async () => {
-      let token = localStorage.getItem("auth-token");
-      if (token === null) {
-        localStorage.setItem("auth-token", "");
-        token = "";
-      }
-      const tokenResponse = await Axios.post(
-        "http://localhost:8000/users/validToken",
-        null,
-        { header: { "x-auth-token": token } }
-      );
-      if (tokenResponse.data) {
-        const userResponse = await Axios.get("http://localhost:8000/users/", {
-          header: { "x-auth-token": token },
-        });
-        setUserData({
-          token,
-          user: userResponse.data,
-        });
-      }
-    };
-
-    loginCheck();
-  }, []);
+    history.listen((location, action) => {
+      dispatch(alertActions.clear());
+    });
+  }, [dispatch]);
 
   return (
     <>
-      <BrowserRouter>
-        <createContext.Provider value={{ userData, setUserData }}>
-          <Header />
-          <Switch>
-            <Route exact path="/" component={Home} />
-            <Route path="/login" component={Login} />
-            <Route path="/register" component={Register} />
-            <Route path="/settings" component={Settings} />
-          </Switch>
-        </createContext.Provider>
-      </BrowserRouter>
+      {alert.message && (
+        <div className={`alert ${alert.type}`}>{alert.message}</div>
+      )}
+      <Router history={history}>
+        <Header />
+        <Switch>
+          <PrivateRoute exact path="/" component={HomePage} />
+          <Route path="/login" component={LoginPage} />
+          <Route path="/register" component={RegisterPage} />
+          <Redirect from="*" to="/" />
+        </Switch>
+      </Router>
     </>
   );
 }
