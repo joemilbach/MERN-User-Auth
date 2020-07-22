@@ -1,8 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Poppins:ital,wght@0,200;0,600;1,200;1,600&display=swap');
-
-@import
-  "custom",
-  "bootstrap-components";
+@import url("https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Poppins:ital,wght@0,200;0,600;1,200;1,600&display=swap");
+@import "custom", "bootstrap-components";
 
 /* General */
 
@@ -21,6 +18,12 @@ h1 {
 
 .form-control {
   padding: 0.375rem 1rem;
+}
+
+.form-label {
+  > svg {
+    cursor: help;
+  }
 }
 
 /* Header */

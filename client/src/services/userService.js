@@ -10,11 +10,11 @@ export const userService = {
   delete: _delete,
 };
 
-function login(username, password) {
+function login(email, password) {
   const requestOptions = {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ username, password }),
+    body: JSON.stringify({ email, password }),
   };
 
   return fetch("http://localhost:8000/users/authenticate", requestOptions)
@@ -22,7 +22,6 @@ function login(username, password) {
     .then((user) => {
       // store user details and jwt token in local storage to keep user logged in between page refreshes
       localStorage.setItem("user", JSON.stringify(user));
-
       return user;
     });
 }
@@ -73,9 +72,13 @@ function update(user) {
     body: JSON.stringify(user),
   };
 
-  return fetch(`http://localhost:8000/users/${user.id}`, requestOptions).then(
-    handleResponse
-  );
+  return fetch(`http://localhost:8000/users/${user.id}`, requestOptions)
+    .then(handleResponse)
+    .then((user) => {
+      // update store user details and jwt token in local storage
+      localStorage.setItem("user", JSON.stringify(user));
+      return user;
+    });
 }
 
 // prefixed function name with underscore because delete is a reserved word in javascript
@@ -103,7 +106,6 @@ function handleResponse(response) {
       const error = (data && data.message) || response.statusText;
       return Promise.reject(error);
     }
-
     return data;
   });
 }

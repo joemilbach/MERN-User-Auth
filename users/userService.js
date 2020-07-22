@@ -13,8 +13,8 @@ module.exports = {
   delete: _delete,
 };
 
-async function authenticate({ username, password }) {
-  const user = await User.findOne({ username });
+async function authenticate({ email, password }) {
+  const user = await User.findOne({ email });
   if (user && bcrypt.compareSync(password, user.hash)) {
     const token = jwt.sign({ sub: user.id }, config.secret, {
       expiresIn: "7d",
@@ -36,11 +36,26 @@ async function getById(id) {
 
 async function create(userParam) {
   // validate
-  if (await User.findOne({ username: userParam.username })) {
-    throw 'Username "' + userParam.username + '" is already taken';
+  if (await User.findOne({ email: userParam.email })) {
+    throw 'Email "' + userParam.email + '" is already taken';
+  }
+
+  if (userParam.password.length < 5) {
+    throw "Minimum of 5 character in password";
+  }
+  if (userParam.password !== userParam.passwordConfirm) {
+    throw "Password fields do not match";
   }
 
   const user = new User(userParam);
+
+  // default username to email minus domain
+  if (!userParam.username) {
+    user.username = userParam.email.substring(
+      0,
+      userParam.email.lastIndexOf("@")
+    );
+  }
 
   // hash password
   if (userParam.password) {
@@ -51,27 +66,47 @@ async function create(userParam) {
   await user.save();
 }
 
-async function update(id, userParam) {
+async function update(id, updateParam) {
   const user = await User.findById(id);
+  const token = updateParam.token;
+  let userUpdates = {};
 
   // validate
   if (!user) throw "User not found";
-  if (
-    user.username !== userParam.username &&
-    (await User.findOne({ username: userParam.username }))
-  ) {
-    throw 'Username "' + userParam.username + '" is already taken';
+
+  if (updateParam.email) {
+    const existingUser = await User.findOne({ email: user.email });
+    if (existingUser && id !== existingUser) {
+      throw 'Email "' + updateParam.email + '" is already taken';
+    }
+    userUpdates.email = user.email;
   }
 
-  // hash password if it was entered
-  if (userParam.password) {
-    userParam.hash = bcrypt.hashSync(userParam.password, 10);
+  if (updateParam.password) {
+    if (updateParam.password.length < 5) {
+      throw "Minimum of 5 character in password";
+    }
+    if (updateParam.password !== updateParam.passwordConfirm) {
+      throw "Password fields do not match";
+    }
+    const passwordMatch = await bcrypt.compare(updateParam.password, user.hash);
+    if (passwordMatch) {
+      throw "Password currently being used";
+    }
+    userUpdates.hash = bcrypt.hashSync(updateParam.password, 10);
   }
 
-  // copy userParam properties to user
-  Object.assign(user, userParam);
+  if (updateParam.username) {
+    userUpdates.username = updateParam.username;
+  }
 
+  // copy userUpdates properties to user
+  Object.assign(user, userUpdates);
   await user.save();
+  return {
+    ...user.toJSON(),
+    token,
+  };
 }
 
 async function _delete(id) {

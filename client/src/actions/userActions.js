@@ -7,15 +7,17 @@ export const userActions = {
   login,
   logout,
   register,
+  update,
+  getById,
   getAll,
   delete: _delete,
 };
 
-function login(username, password) {
+function login(email, password) {
   return (dispatch) => {
-    dispatch(request({ username }));
+    dispatch(request({ email }));
 
-    userService.login(username, password).then(
+    userService.login(email, password).then(
       (user) => {
         dispatch(success(user));
         history.push("/");
@@ -68,6 +70,54 @@ function register(user) {
   }
   function failure(error) {
     return { type: userConstants.REGISTER_FAILURE, error };
+  }
+}
+
+function update(user) {
+  return (dispatch) => {
+    dispatch(request(user));
+
+    userService.update(user).then(
+      (user) => {
+        dispatch(success(user));
+        dispatch(alertActions.success("Update successful"));
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+        dispatch(alertActions.error(error.toString()));
+      }
+    );
+  };
+
+  function request(user) {
+    return { type: userConstants.UPDATE_REQUEST };
+  }
+  function success(user) {
+    return { type: userConstants.UPDATE_SUCCESS, user };
+  }
+  function failure(error) {
+    return { type: userConstants.UPDATE_FAILURE, error };
+  }
+}
+
+function getById(id) {
+  return (dispatch) => {
+    dispatch(request(id));
+
+    userService.getById(id).then(
+      (users) => dispatch(success(users)),
+      (error) => dispatch(failure(error.toString()))
+    );
+  };
+
+  function request() {
+    return { type: userConstants.GETBYID_REQUEST };
+  }
+  function success(user) {
+    return { type: userConstants.GETBYID_SUCCESS, user };
+  }
+  function failure(error) {
+    return { type: userConstants.GETBYID_FAILURE, error };
   }
 }
 

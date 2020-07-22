@@ -11,12 +11,13 @@ import Button from "react-bootstrap/Button";
 
 function LoginPage() {
   const [inputs, setInputs] = useState({
-    username: "",
+    email: "",
     password: "",
   });
   const [submitted, setSubmitted] = useState(false);
-  const { username, password } = inputs;
+  const { email, password } = inputs;
   const loggingIn = useSelector((state) => state.authentication.loggingIn);
+  const alert = useSelector((state) => state.alert);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -24,17 +25,15 @@ function LoginPage() {
   }, [dispatch]);
 
   function handleChange(e) {
-    console.log(e.target);
     const { id, value } = e.target;
     setInputs((inputs) => ({ ...inputs, [id]: value }));
   }
 
   function handleSubmit(e) {
     e.preventDefault();
-
     setSubmitted(true);
-    if (username && password) {
-      dispatch(userActions.login(username, password));
+    if (email && password) {
+      dispatch(userActions.login(email, password));
     }
   }
 
@@ -44,23 +43,24 @@ function LoginPage() {
         <h1>Login in here</h1>
       </Col>
       <Form
-        className="col-md-8 col-lg-6 pt-2 mx-auto"
+        className="col-md-8 col-lg-6 pt-3 mx-auto"
         name="form"
         onSubmit={handleSubmit}
       >
-        <Form.Group controlId="username">
-          <Form.Label>Username</Form.Label>
+        {alert.message && (
+          <div className={`alert ${alert.type}`}>{alert.message}</div>
+        )}
+        <Form.Group controlId="email">
+          <Form.Label>Email</Form.Label>
           <Form.Control
             type="text"
-            placeholder="John Doe"
-            value={username}
+            placeholder="johndoe@domain.com"
+            value={email}
             onChange={handleChange}
-            className={
-              "form-control" + (submitted && !username ? " is-invalid" : "")
-            }
+            className={submitted && !email ? " is-invalid" : ""}
           />
-          {submitted && !username && (
-            <div className="invalid-feedback">Username is required</div>
+          {submitted && !email && (
+            <div className="invalid-feedback">Email is required</div>
           )}
         </Form.Group>
         <Form.Group controlId="password">
@@ -70,15 +70,13 @@ function LoginPage() {
             placeholder="******"
             value={password}
             onChange={handleChange}
-            className={
-              "form-control" + (submitted && !password ? " is-invalid" : "")
-            }
+            className={submitted && !password ? " is-invalid" : ""}
           />
           {submitted && !password && (
             <div className="invalid-feedback">Password is required</div>
           )}
         </Form.Group>
-        <Form.Group className="d-flex justify-content-between align-items-center">
+        <Form.Group className="d-flex justify-content-between align-items-center pt-2">
           <Link to="/register" className="btn btn-outline-primary">
             Register
           </Link>

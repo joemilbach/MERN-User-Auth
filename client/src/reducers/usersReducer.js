@@ -3,6 +3,7 @@ import { userConstants } from "../constants";
 export function users(state = {}, action) {
   switch (action.type) {
     case userConstants.GETALL_REQUEST:
+    case userConstants.GETBYID_REQUEST:
       return {
         loading: true,
       };
@@ -11,8 +12,13 @@ export function users(state = {}, action) {
         items: action.users,
       };
     case userConstants.GETALL_FAILURE:
+    case userConstants.GETBYID_FAILURE:
       return {
         error: action.error,
+      };
+    case userConstants.GETBYID_SUCCESS:
+      return {
+        user: action.user,
       };
     case userConstants.DELETE_REQUEST:
       // add 'deleting:true' property to user being deleted

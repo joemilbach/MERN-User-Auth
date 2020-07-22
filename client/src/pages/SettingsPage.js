@@ -10,25 +10,35 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import InputGroup from "react-bootstrap/InputGroup";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 
-function RegisterPage() {
+function SettingsPage() {
+  const settings = useSelector((state) => state.authentication.user);
   const [user, setUser] = useState({
+    id: settings.id,
     email: "",
     username: "",
     password: "",
     passwordConfirm: "",
+    token: settings.token,
   });
-  const [submitted, setSubmitted] = useState(false);
   const registering = useSelector((state) => state.registration.registering);
   const alert = useSelector((state) => state.alert);
   const dispatch = useDispatch();
 
-  // reset login status
   useEffect(() => {
-    dispatch(userActions.logout());
-  }, [dispatch]);
+    if (typeof alert.type !== undefined && alert.type === "alert-success") {
+      setUser((user) => ({
+        ...user,
+        email: "",
+        username: "",
+        password: "",
+        passwordConfirm: "",
+      }));
+    }
+  }, [alert.type]);
 
   function handleChange(e) {
     const { id, value } = e.target;
@@ -37,19 +47,16 @@ function RegisterPage() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    setSubmitted(true);
-    if (user.email && user.password && user.passwordConfirm) {
-      dispatch(userActions.register(user));
-    }
+    dispatch(userActions.update(user));
   }
 
   return (
     <Container as="main" className="login" fluid>
       <Col as="hgroup" className="col-md-8 col-lg-6 mt-lg-5 mx-auto">
-        <h1>Sign up to get started</h1>
+        <h1>Edit your settings or delete your account</h1>
       </Col>
       <Form
-        className="col-md-8 col-lg-6 pt-3 mx-auto"
+        className="col-md-8 col-lg-6 pt-2 mx-auto"
         name="form"
         onSubmit={handleSubmit}
       >
@@ -57,26 +64,32 @@ function RegisterPage() {
           <div className={`alert ${alert.type}`}>{alert.message}</div>
         )}
         <Form.Group controlId="email">
-          <Form.Label>Email*</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="johndoe@domain.com"
-            value={user.email}
-            onChange={handleChange}
-            className={submitted && !user.email ? " is-invalid" : ""}
-          />
-          {submitted && !user.email && (
-            <div className="invalid-feedback">Email is required</div>
-          )}
+          <Form.Label>Email</Form.Label>
+          <InputGroup>
+            <InputGroup.Prepend>
+              <InputGroup.Text>{settings.email}</InputGroup.Text>
+            </InputGroup.Prepend>
+            <Form.Control
+              type="text"
+              placeholder="johndoe@domain.com"
+              value={user.email}
+              onChange={handleChange}
+            />
+          </InputGroup>
         </Form.Group>
         <Form.Group controlId="username">
           <Form.Label>Username</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="John Doe"
-            value={user.username}
-            onChange={handleChange}
-          />
+          <InputGroup>
+            <InputGroup.Prepend>
+              <InputGroup.Text>{settings.username}</InputGroup.Text>
+            </InputGroup.Prepend>
+            <Form.Control
+              type="text"
+              placeholder="John Doe"
+              value={user.username}
+              onChange={handleChange}
+            />
+          </InputGroup>
         </Form.Group>
         <Row>
           <Form.Text className="col-12 mt-2 mb-3 d-none">
@@ -90,7 +103,12 @@ function RegisterPage() {
               Password*
               <OverlayTrigger
                 placement="top"
-                overlay={<Tooltip>Six characters or longer</Tooltip>}
+                target="tooltip-password"
+                overlay={
+                  <Tooltip id="tooltip-password">
+                    Six characters or longer
+                  </Tooltip>
+                }
               >
                 <InfoCircleFill className="text-info mr-2" />
               </OverlayTrigger>
@@ -100,18 +118,19 @@ function RegisterPage() {
               placeholder="******"
               value={user.password}
               onChange={handleChange}
-              className={submitted && !user.password ? " is-invalid" : ""}
             />
-            {submitted && !user.password && (
-              <div className="invalid-feedback">Password is required</div>
-            )}
           </Form.Group>
           <Form.Group controlId="passwordConfirm" className="col-md-6">
             <Form.Label className="w-100 d-flex justify-content-between align-items-center">
-              Confirm Password*{" "}
+              Confirm Password*
               <OverlayTrigger
                 placement="top"
-                overlay={<Tooltip>Must match "Password"</Tooltip>}
+                target="tooltip-passwordConfirm"
+                overlay={
+                  <Tooltip id="tooltip-passwordConfirm">
+                    Must match "Password"
+                  </Tooltip>
+                }
               >
                 <InfoCircleFill className="text-info mr-2" />
               </OverlayTrigger>
@@ -121,32 +140,23 @@ function RegisterPage() {
               placeholder="******"
               value={user.passwordConfirm}
               onChange={handleChange}
-              className={
-                submitted && !user.passwordConfirm ? " is-invalid" : ""
-              }
             />
-            {submitted && !user.passwordConfirm && (
-              <div className="invalid-feedback">Password is required</div>
-            )}
           </Form.Group>
         </Row>
         <Form.Group className="d-flex justify-content-between align-items-center pt-2">
-          <Link to="/login" className="btn btn-outline-primary">
-            Cancel
+          <Link to="/" className="btn btn-outline-primary">
+            Back Home
           </Link>
-          <span>
-            <em className="mx-4 text-muted">*Required fields</em>
-            <Button variant="warning" className="text-white" type="submit">
-              {registering && (
-                <span className="spinner-border spinner-border-sm mr-1"></span>
-              )}
-              Sign Up
-            </Button>
-          </span>
+          <Button variant="warning" className="text-white" type="submit">
+            {registering && (
+              <span className="spinner-border spinner-border-sm mr-1"></span>
+            )}
+            Edit Settings
+          </Button>
         </Form.Group>
       </Form>
     </Container>
   );
 }
 
-export default RegisterPage;
+export default SettingsPage;
