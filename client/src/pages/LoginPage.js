@@ -50,7 +50,7 @@ function LoginPage() {
         {alert.message && (
           <div className={`alert ${alert.type}`}>{alert.message}</div>
         )}
-        <Form.Group controlId="email">
+        <Form.Group className="mb-3" controlId="email">
           <Form.Label>Email</Form.Label>
           <Form.Control
             type="text"
@@ -63,7 +63,7 @@ function LoginPage() {
             <div className="invalid-feedback">Email is required</div>
           )}
         </Form.Group>
-        <Form.Group controlId="password">
+        <Form.Group className="mb-3" controlId="password">
           <Form.Label>Password</Form.Label>
           <Form.Control
             type="password"
@@ -76,7 +76,7 @@ function LoginPage() {
             <div className="invalid-feedback">Password is required</div>
           )}
         </Form.Group>
-        <Form.Group className="d-flex justify-content-between align-items-center pt-2">
+        <Form.Group className="d-flex justify-content-between align-items-center mb-3 pt-2">
           <Link to="/register" className="btn btn-outline-primary">
             Register
           </Link>

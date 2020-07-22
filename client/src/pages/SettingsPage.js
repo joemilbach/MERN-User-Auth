@@ -63,12 +63,10 @@ function SettingsPage() {
         {alert.message && (
           <div className={`alert ${alert.type}`}>{alert.message}</div>
         )}
-        <Form.Group controlId="email">
+        <Form.Group className="mb-3" controlId="email">
           <Form.Label>Email</Form.Label>
           <InputGroup>
-            <InputGroup.Prepend>
-              <InputGroup.Text>{settings.email}</InputGroup.Text>
-            </InputGroup.Prepend>
+            <InputGroup.Text>{settings.email}</InputGroup.Text>
             <Form.Control
               type="text"
               placeholder="johndoe@domain.com"
@@ -77,12 +75,10 @@ function SettingsPage() {
             />
           </InputGroup>
         </Form.Group>
-        <Form.Group controlId="username">
+        <Form.Group className="mb-3" controlId="username">
           <Form.Label>Username</Form.Label>
           <InputGroup>
-            <InputGroup.Prepend>
-              <InputGroup.Text>{settings.username}</InputGroup.Text>
-            </InputGroup.Prepend>
+            <InputGroup.Text>{settings.username}</InputGroup.Text>
             <Form.Control
               type="text"
               placeholder="John Doe"
@@ -91,7 +87,7 @@ function SettingsPage() {
             />
           </InputGroup>
         </Form.Group>
-        <Row>
+        <Row className="mb-3">
           <Form.Text className="col-12 mt-2 mb-3 d-none">
             <em>
               "Password" must be six characters or longer and must match
