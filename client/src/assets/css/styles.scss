@@ -12,6 +12,10 @@ h1 {
   align-items: center;
 }
 
+.bg-paper {
+  background-color: $paper !important;
+}
+
 .btn {
   padding: 0.375rem 2rem;
 }

@@ -4,24 +4,31 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { userActions } from "../actions";
 
-import { InfoCircleFill } from "react-bootstrap-icons";
+import { InfoCircleFill, ExclamationTriangleFill } from "react-bootstrap-icons";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import Alert from "react-bootstrap/Alert";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import InputGroup from "react-bootstrap/InputGroup";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
+import Collapse from "react-bootstrap/Collapse";
 
 function SettingsPage() {
   const settings = useSelector((state) => state.authentication.user);
+  const [userDelete, setUserDelete] = useState({
+    open: false,
+    confirm: false,
+  });
   const [user, setUser] = useState({
     id: settings.id,
     email: "",
     username: "",
     password: "",
     passwordConfirm: "",
+    delete: "",
     token: settings.token,
   });
   const registering = useSelector((state) => state.registration.registering);
@@ -50,10 +57,18 @@ function SettingsPage() {
     dispatch(userActions.update(user));
   }
 
+  function handleDeleteUser(e) {
+    e.preventDefault();
+    setUserDelete((userDelete) => ({ ...userDelete, confirm: true }));
+    if (user.delete && user.delete === settings.email) {
+      dispatch(userActions.delete(settings.id));
+    }
+  }
+
   return (
     <Container as="main" className="login" fluid>
       <Col as="hgroup" className="col-md-8 col-lg-6 mt-lg-5 mx-auto">
-        <h1>Edit your settings or delete your account</h1>
+        <h1>Edit your personal settings</h1>
       </Col>
       <Form
         className="col-md-8 col-lg-6 pt-2 mx-auto"
@@ -151,6 +166,64 @@ function SettingsPage() {
           </Button>
         </Form.Group>
       </Form>
+      <Col md="8" lg="6" className="mt-lg-5 mx-auto">
+        <Alert variant="danger" className="bg-paper d-block">
+          <Alert.Heading as="h3" className="h5 w-100 d-flex align-items-center">
+            <ExclamationTriangleFill className="mr-2" />
+            Delete Account
+          </Alert.Heading>
+          <p>
+            Once you delete your account, there is no going back. Please be
+            certain.
+            <Alert.Link
+              className="px-2"
+              onClick={() =>
+                setUserDelete((userDelete) => ({
+                  ...userDelete,
+                  open: !userDelete.open,
+                }))
+              }
+              aria-controls="userDeleteAccountForm"
+              aria-expanded={userDelete.open}
+            >
+              Delete My Account
+            </Alert.Link>
+          </p>
+
+          <Collapse in={userDelete.open}>
+            <div id="deleteAccountForm">
+              <Form name="form" onSubmit={handleDeleteUser}>
+                <Form.Group className="mb-3" controlId="delete">
+                  <Form.Label>
+                    Type <kbd>{settings.email}</kbd> below:
+                  </Form.Label>
+                  <InputGroup>
+                    <Form.Control
+                      type="text"
+                      placeholder={settings.email}
+                      value={user.delete}
+                      onChange={handleChange}
+                      className={
+                        userDelete.confirm && user.delete !== settings.email
+                          ? " is-invalid"
+                          : ""
+                      }
+                    />
+                    <Button variant="outline-danger" type="submit">
+                      Delete
+                    </Button>
+                  </InputGroup>
+                  {userDelete.confirm && user.delete !== settings.email && (
+                    <div className="invalid-feedback d-block">
+                      Try again input should be <em>{settings.email}</em>
+                    </div>
+                  )}
+                </Form.Group>
+              </Form>
+            </div>
+          </Collapse>
+        </Alert>
+      </Col>
     </Container>
   );
 }

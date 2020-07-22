@@ -228,9 +228,9 @@ $body-color: $gray-700 !default;
 //$border-width: 1px !default;
 //$border-color: $gray-300 !default;
 
-$border-radius: 999vw !default;
-$border-radius-lg: 999vw !default;
-$border-radius-sm: 999vw !default;
+$border-radius: 2px !default;
+$border-radius-lg: 0 !default;
+$border-radius-sm: 0 !default;
 
 //$rounded-pill: 50rem !default;
 
@@ -434,9 +434,9 @@ $headings-font-family: $font-family-serif !default;
 //$btn-block-spacing-y: 0.5rem !default;
 
 // Allows for customizing button radius independently from global border radius
-//$btn-border-radius: $border-radius !default;
-//$btn-border-radius-sm: $border-radius-sm !default;
-//$btn-border-radius-lg: $border-radius-lg !default;
+$btn-border-radius: 999vw !default;
+$btn-border-radius-sm: 999vw !default;
+$btn-border-radius-lg: 999vw !default;
 
 //$btn-transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out !default;
 
@@ -1067,7 +1067,7 @@ $tooltip-padding-x: 0.85rem !default;
 //$kbd-padding-y: 0.2rem !default;
 //$kbd-padding-x: 0.4rem !default;
 //$kbd-font-size: $code-font-size !default;
-//$kbd-color: $white !default;
-//$kbd-bg: $gray-900 !default;
+$kbd-color: inherit !default;
+$kbd-bg: $paper !default;
 
 //$pre-color: null !default;
