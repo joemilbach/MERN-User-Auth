@@ -57,6 +57,11 @@ async function create(userParam) {
     );
   }
 
+  // default role to standard user
+  if (!userParam.role) {
+    user.role = "U";
+  }
+
   // hash password
   if (userParam.password) {
     user.hash = bcrypt.hashSync(userParam.password, 10);
@@ -98,6 +103,10 @@ async function update(id, updateParam) {
 
   if (updateParam.username) {
     userUpdates.username = updateParam.username;
+  }
+
+  if (updateParam.role) {
+    userUpdates.role = updateParam.role;
   }
 
   // copy userUpdates properties to user

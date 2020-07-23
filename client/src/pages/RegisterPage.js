@@ -19,6 +19,7 @@ function RegisterPage() {
     username: "",
     password: "",
     passwordConfirm: "",
+    role: "",
   });
   const [submitted, setSubmitted] = useState(false);
   const registering = useSelector((state) => state.registration.registering);
@@ -85,7 +86,7 @@ function RegisterPage() {
               "Confirm Password".
             </em>
           </Form.Text>
-          <Form.Group controlId="password" className="col-md-6">
+          <Form.Group controlId="password" className="col-md-6 mb-3">
             <Form.Label className="w-100 d-flex justify-content-between align-items-center">
               Password*
               <OverlayTrigger
@@ -106,7 +107,7 @@ function RegisterPage() {
               <div className="invalid-feedback">Password is required</div>
             )}
           </Form.Group>
-          <Form.Group controlId="passwordConfirm" className="col-md-6">
+          <Form.Group controlId="passwordConfirm" className="col-md-6 mb-3">
             <Form.Label className="w-100 d-flex justify-content-between align-items-center">
               Confirm Password*{" "}
               <OverlayTrigger
@@ -128,6 +129,20 @@ function RegisterPage() {
             {submitted && !user.passwordConfirm && (
               <div className="invalid-feedback">Password is required</div>
             )}
+          </Form.Group>
+          <Form.Group controlId="role" className="col-md-6">
+            <Form.Label>Account Type</Form.Label>
+            <Form.Control
+              custom
+              as="select"
+              className="form-select"
+              value={user.role}
+              onChange={handleChange}
+            >
+              <option selected>Please make a selection...</option>
+              <option value="U">Standard User</option>
+              <option value="A">Admin</option>
+            </Form.Control>
           </Form.Group>
         </Row>
         <Form.Group className="d-flex justify-content-between align-items-center pt-2">

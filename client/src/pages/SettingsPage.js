@@ -28,6 +28,7 @@ function SettingsPage() {
     username: "",
     password: "",
     passwordConfirm: "",
+    role: "",
     delete: "",
     token: settings.token,
   });
@@ -43,6 +44,7 @@ function SettingsPage() {
         username: "",
         password: "",
         passwordConfirm: "",
+        role: "",
       }));
     }
   }, [alert.type]);
@@ -109,7 +111,7 @@ function SettingsPage() {
               "Confirm Password".
             </em>
           </Form.Text>
-          <Form.Group controlId="password" className="col-md-6">
+          <Form.Group controlId="password" className="col-md-6 mb-3">
             <Form.Label className="w-100 d-flex justify-content-between align-items-center">
               Password*
               <OverlayTrigger
@@ -131,7 +133,7 @@ function SettingsPage() {
               onChange={handleChange}
             />
           </Form.Group>
-          <Form.Group controlId="passwordConfirm" className="col-md-6">
+          <Form.Group controlId="passwordConfirm" className="col-md-6 mb-3">
             <Form.Label className="w-100 d-flex justify-content-between align-items-center">
               Confirm Password*
               <OverlayTrigger
@@ -152,6 +154,21 @@ function SettingsPage() {
               value={user.passwordConfirm}
               onChange={handleChange}
             />
+          </Form.Group>
+          <Form.Group controlId="role" className="col-md-6">
+            <Form.Label>Account Type</Form.Label>
+            <Form.Control
+              custom
+              as="select"
+              className="form-select"
+              value={user.role}
+              onChange={handleChange}
+            >
+              <option selected>Please make a selection...</option>
+              <option value="U">Standard User</option>
+              <option value="A">Admin</option>
+              <option value="SA">Super Admin</option>
+            </Form.Control>
           </Form.Group>
         </Row>
         <Form.Group className="d-flex justify-content-between align-items-center pt-2">
