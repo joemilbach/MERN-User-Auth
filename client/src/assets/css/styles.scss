@@ -20,6 +20,18 @@ h1 {
   padding: 0.375rem 2rem;
 }
 
+.dropdown-user {
+  .dropdown-item {
+    &.active {
+      &:hover {
+        cursor: default;
+        color: #fff;
+      }
+      background-color: $cyan-600;
+    }
+  }
+}
+
 .drop-down-toggle-empty {
   &:after {
     display: none;
