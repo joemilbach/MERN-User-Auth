@@ -31,8 +31,9 @@ function SettingsPage() {
     role: "",
     delete: "",
     token: settings.token,
+    sa: false,
   });
-  const registering = useSelector((state) => state.registration.registering);
+  const updating = useSelector((state) => state.registration.registering);
   const alert = useSelector((state) => state.alert);
   const dispatch = useDispatch();
 
@@ -178,7 +179,7 @@ function SettingsPage() {
             Back Home
           </Link>
           <Button variant="warning" className="text-white" type="submit">
-            {registering && (
+            {updating && (
               <span className="spinner-border spinner-border-sm mr-1"></span>
             )}
             Edit Settings

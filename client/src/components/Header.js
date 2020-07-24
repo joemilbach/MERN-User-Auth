@@ -67,7 +67,7 @@ function Header() {
                   {user.role === "SA" && (
                     <Dropdown.Item
                       active={location === "/users" ? true : ""}
-                      href="/edit"
+                      href="/users"
                       onClick={(e) => handleLocation(e)}
                     >
                       User Accounts

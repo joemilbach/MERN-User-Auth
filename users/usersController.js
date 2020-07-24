@@ -59,6 +59,13 @@ function update(req, res, next) {
     .catch((err) => next(err));
 }
 
+function saUpdate(req, res, next) {
+  userService
+    .update(req.params.id, req.body)
+    .then((user) => res.json(user))
+    .catch((err) => next(err));
+}
+
 function _delete(req, res, next) {
   userService
     .delete(req.params.id)

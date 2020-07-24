@@ -79,6 +79,7 @@ function update(user) {
 
     userService.update(user).then(
       (user) => {
+        console.log(user);
         dispatch(success(user));
         dispatch(alertActions.success("Update successful"));
       },
@@ -90,13 +91,27 @@ function update(user) {
   };
 
   function request(user) {
-    return { type: userConstants.UPDATE_REQUEST };
+    return {
+      type: user.sa
+        ? userConstants.SA_UPDATE_REQUEST
+        : userConstants.UPDATE_REQUEST,
+    };
   }
   function success(user) {
-    return { type: userConstants.UPDATE_SUCCESS, user };
+    return {
+      type: user.sa
+        ? userConstants.SA_UPDATE_SUCCESS
+        : userConstants.UPDATE_SUCCESS,
+      user,
+    };
   }
   function failure(error) {
-    return { type: userConstants.UPDATE_FAILURE, error };
+    return {
+      type: user.sa
+        ? userConstants.SA_UPDATE_FAILURE
+        : userConstants.UPDATE_FAILURE,
+      error,
+    };
   }
 }
 

@@ -35,7 +35,7 @@ async function getById(id) {
 }
 
 async function create(userParam) {
-  // validate
+  // Validate
   if (await User.findOne({ email: userParam.email })) {
     throw 'Email "' + userParam.email + '" is already taken';
   }
@@ -49,7 +49,7 @@ async function create(userParam) {
 
   const user = new User(userParam);
 
-  // default username to email minus domain
+  // Default username to email minus domain
   if (!userParam.username) {
     user.username = userParam.email.substring(
       0,
@@ -57,7 +57,7 @@ async function create(userParam) {
     );
   }
 
-  // default role to standard user
+  // Default role to standard user
   if (!userParam.role) {
     user.role = "U";
   }
@@ -67,16 +67,16 @@ async function create(userParam) {
     user.hash = bcrypt.hashSync(userParam.password, 10);
   }
 
-  // save user
   await user.save();
 }
 
 async function update(id, updateParam) {
   const user = await User.findById(id);
   const token = updateParam.token;
+  const sa = updateParam.sa;
   let userUpdates = {};
 
-  // validate
+  // Validate
   if (!user) throw "User not found";
 
   if (updateParam.email) {
@@ -109,13 +109,21 @@ async function update(id, updateParam) {
     userUpdates.role = updateParam.role;
   }
 
-  // copy userUpdates properties to user
+  // Copy userUpdates properties to user
   Object.assign(user, userUpdates);
   await user.save();
-  return {
-    ...user.toJSON(),
-    token,
-  };
+
+  if (sa) {
+    return {
+      ...user.toJSON(),
+      sa,
+    };
+  } else {
+    return {
+      ...user.toJSON(),
+      token,
+    };
+  }
 }
 
 async function _delete(id) {
