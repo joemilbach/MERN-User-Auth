@@ -26,7 +26,7 @@ function RegisterPage() {
   const alert = useSelector((state) => state.alert);
   const dispatch = useDispatch();
 
-  // reset login status
+  // Reset login status
   useEffect(() => {
     dispatch(userActions.logout());
   }, [dispatch]);
@@ -45,7 +45,7 @@ function RegisterPage() {
   }
 
   return (
-    <Container as="main" className="login" fluid>
+    <Container as="main" className="register" fluid>
       <Col as="hgroup" className="col-md-8 col-lg-6 mt-lg-5 mx-auto">
         <h1>Sign up to get started</h1>
       </Col>

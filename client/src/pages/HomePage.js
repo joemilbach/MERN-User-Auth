@@ -8,7 +8,7 @@ function HomePage() {
   const user = useSelector((state) => state.authentication.user);
 
   return (
-    <Container as="main" className="login" fluid>
+    <Container as="main" className="home" fluid>
       <Col as="hgroup" className="col-md-11 mt-lg-5 mx-auto">
         <h1>Hi {user.username}!</h1>
       </Col>

@@ -5,6 +5,7 @@ import rootReducer from "../reducers";
 
 let middleware = [thunk];
 
+// Only log redux in DEV
 if (process.env.NODE_ENV !== "production") {
   middleware = [...middleware, createLogger()];
 }

@@ -16,7 +16,7 @@ import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 import Collapse from "react-bootstrap/Collapse";
 
-function SettingsPage() {
+function UserAccountsPage() {
   const settings = useSelector((state) => state.authentication.user);
   const [userDelete, setUserDelete] = useState({
     open: false,
@@ -36,7 +36,6 @@ function SettingsPage() {
   const alert = useSelector((state) => state.alert);
   const dispatch = useDispatch();
 
-  // Reset form after successful update
   useEffect(() => {
     if (typeof alert.type !== undefined && alert.type === "alert-success") {
       setUser((user) => ({
@@ -60,7 +59,6 @@ function SettingsPage() {
     dispatch(userActions.update(user));
   }
 
-  // Delete account after user types in current email
   function handleDeleteUser(e) {
     e.preventDefault();
     setUserDelete((userDelete) => ({ ...userDelete, confirm: true }));
@@ -70,7 +68,7 @@ function SettingsPage() {
   }
 
   return (
-    <Container as="main" className="settings" fluid>
+    <Container as="main" className="user-accounts" fluid>
       <Col as="hgroup" className="col-md-8 col-lg-6 mt-lg-5 mx-auto">
         <h1>Edit your personal settings</h1>
       </Col>
@@ -247,4 +245,4 @@ function SettingsPage() {
   );
 }
 
-export default SettingsPage;
+export default UserAccountsPage;

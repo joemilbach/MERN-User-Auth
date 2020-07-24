@@ -4,7 +4,6 @@ import { useSelector } from "react-redux";
 import { history } from "../utility";
 
 import "popper.js";
-
 import { LayersHalf, GearFill } from "react-bootstrap-icons";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
@@ -14,6 +13,7 @@ import Dropdown from "react-bootstrap/Dropdown";
 function handleLocation(e) {
   e.preventDefault();
   history.push(e.target.attributes.href.value);
+  // Reset focus
   e.target.focus();
   e.target.blur();
 }
@@ -22,6 +22,7 @@ function Header() {
   const [location, setLocation] = useState(history.location.pathname);
   const user = useSelector((state) => state.authentication.user);
 
+  // Get pathname for dropdown active
   useEffect(() => {
     history.listen((location) => {
       setLocation(history.location.pathname);
@@ -63,6 +64,15 @@ function Header() {
                   >
                     Settings
                   </Dropdown.Item>
+                  {user.role === "SA" && (
+                    <Dropdown.Item
+                      active={location === "/users" ? true : ""}
+                      href="/edit"
+                      onClick={(e) => handleLocation(e)}
+                    >
+                      User Accounts
+                    </Dropdown.Item>
+                  )}
                   <Dropdown.Divider />
                   <Dropdown.Item
                     href="/login"
