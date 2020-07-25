@@ -89,6 +89,7 @@ function update(user) {
     );
   };
 
+  // Seprate reducer for super admin edits
   function request(user) {
     return {
       type: user.sa

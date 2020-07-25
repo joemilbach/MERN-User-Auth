@@ -13,13 +13,11 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import ListGroup from "react-bootstrap/ListGroup";
-//import Alert from "react-bootstrap/Alert";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import InputGroup from "react-bootstrap/InputGroup";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
-//import Collapse from "react-bootstrap/Collapse";
 
 function UserAccountsPage() {
   const users = useSelector((state) => state.users);
@@ -59,7 +57,7 @@ function UserAccountsPage() {
     }
   }, [alert.type, dispatch]);
 
-  // Pull selected user from DB
+  // Pull selected user info from getAll
   useEffect(() => {
     if (
       typeof users.items !== "undefined" &&
@@ -74,7 +72,8 @@ function UserAccountsPage() {
   }, [users, selectedUser.userKey]);
 
   function handleSelectUser(e) {
-    if (e.target.id !== "userListReset") {
+    if (typeof e.target.id !== "undefined") {
+      // Save user index and ID
       const userKey = e.target.id;
       setSelectedUser((selectedUser) => ({
         ...selectedUser,
@@ -101,6 +100,7 @@ function UserAccountsPage() {
   }
 
   function handleSubmit(e) {
+    // Clear alerts before submit
     e.preventDefault();
     dispatch(alertActions.clear());
     dispatch(userActions.update(user));
@@ -131,7 +131,6 @@ function UserAccountsPage() {
                   </h2>
                 </ListGroup.Item>
                 <ListGroup.Item
-                  id="userListReset"
                   variant="light"
                   action
                   onClick={(e) => handleSelectUser(e)}

@@ -70,8 +70,8 @@ function update(user) {
   return fetch(`http://localhost:8000/users/${user.id}`, requestOptions)
     .then(handleResponse)
     .then((user) => {
+      // Update store user details and jwt token in local storage if not super admin
       if (!user.sa) {
-        // Update store user details and jwt token in local storage
         localStorage.setItem("user", JSON.stringify(user));
       }
       return user;
