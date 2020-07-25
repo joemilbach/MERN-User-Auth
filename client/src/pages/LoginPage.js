@@ -80,7 +80,7 @@ function LoginPage() {
           <Link to="/register" className="btn btn-outline-primary">
             Register
           </Link>
-          <Button variant="warning" className="text-white mr-2" type="submit">
+          <Button variant="primary" className="text-white mr-2" type="submit">
             {loggingIn && (
               <span className="spinner-border spinner-border-sm mr-1"></span>
             )}

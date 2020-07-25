@@ -178,7 +178,7 @@ function SettingsPage() {
           <Link to="/" className="btn btn-outline-primary">
             Back Home
           </Link>
-          <Button variant="warning" className="text-white" type="submit">
+          <Button variant="primary" className="text-white" type="submit">
             {updating && (
               <span className="spinner-border spinner-border-sm mr-1"></span>
             )}

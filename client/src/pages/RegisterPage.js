@@ -151,7 +151,7 @@ function RegisterPage() {
           </Link>
           <span>
             <em className="mx-4 text-muted">*Required fields</em>
-            <Button variant="warning" className="text-white" type="submit">
+            <Button variant="primary" className="text-white" type="submit">
               {registering && (
                 <span className="spinner-border spinner-border-sm mr-1"></span>
               )}

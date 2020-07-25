@@ -122,8 +122,8 @@ function UserAccountsPage() {
           <ListGroup>
             {selectedUser.id ? (
               <>
-                <ListGroup.Item variant="info">
-                  <h2 className="h4 d-flex justify-content-between align-items-center">
+                <ListGroup.Item variant="dark">
+                  <h2 className="h4 mb-0 d-flex justify-content-between align-items-center">
                     <span>
                       Editting:
                       <small>
@@ -134,7 +134,7 @@ function UserAccountsPage() {
                       </small>
                     </span>
                     <Button
-                      variant="outline-info"
+                      variant="outline-danger"
                       size="sm"
                       className="d-flex align-items-center py-1"
                       onClick={() => handleDeleteUser(selectedUser.id)}
@@ -149,14 +149,14 @@ function UserAccountsPage() {
                   action
                   onClick={(e) => handleSelectUser(e)}
                 >
-                  <ArrowLeftCircleFill className="text-warning mr-2" />
+                  <ArrowLeftCircleFill className="text-info mr-2" />
                   Back to user list
                 </ListGroup.Item>
               </>
             ) : (
               <>
-                <ListGroup.Item variant="info">
-                  <h2 className="h4">Current Users</h2>
+                <ListGroup.Item variant="dark">
+                  <h2 className="h4 mb-0">Current Users</h2>
                 </ListGroup.Item>
                 {users.items.map((user, index) => (
                   <ListGroup.Item
@@ -166,7 +166,7 @@ function UserAccountsPage() {
                     action
                     onClick={(e) => handleSelectUser(e)}
                   >
-                    <ArrowRightCircleFill className="text-warning mr-2" />
+                    <ArrowRightCircleFill className="text-info mr-2" />
                     {user.username + " - " + user.email}
                   </ListGroup.Item>
                 ))}
@@ -285,7 +285,7 @@ function UserAccountsPage() {
               >
                 Back to User List
               </Button>
-              <Button variant="warning" className="text-white" type="submit">
+              <Button variant="primary" className="text-white" type="submit">
                 {updating && (
                   <span className="spinner-border spinner-border-sm mr-1"></span>
                 )}
