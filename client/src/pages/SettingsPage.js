@@ -14,7 +14,6 @@ import Button from "react-bootstrap/Button";
 import InputGroup from "react-bootstrap/InputGroup";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
-import Collapse from "react-bootstrap/Collapse";
 
 function SettingsPage() {
   const settings = useSelector((state) => state.authentication.user);
@@ -210,7 +209,7 @@ function SettingsPage() {
             </Alert.Link>
           </p>
 
-          <Collapse in={userDelete.open}>
+          {userDelete.open && (
             <div id="deleteAccountForm">
               <Form name="form" onSubmit={handleDeleteUser}>
                 <Form.Group className="mb-3" controlId="delete">
@@ -241,7 +240,7 @@ function SettingsPage() {
                 </Form.Group>
               </Form>
             </div>
-          </Collapse>
+          )}
         </Alert>
       </Col>
     </Container>
