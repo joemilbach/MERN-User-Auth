@@ -79,7 +79,6 @@ function update(user) {
 
     userService.update(user).then(
       (user) => {
-        console.log(user);
         dispatch(success(user));
         dispatch(alertActions.success("Update successful"));
       },

@@ -46,7 +46,8 @@ function UserAccountsPage() {
 
   // Reset form after successful update
   useEffect(() => {
-    if (typeof alert.type !== undefined && alert.type === "alert-success") {
+    if (typeof alert.type !== "undefined" && alert.type === "alert-success") {
+      dispatch(userActions.getAll());
       setUser((user) => ({
         ...user,
         email: "",
@@ -56,16 +57,33 @@ function UserAccountsPage() {
         role: "",
       }));
     }
-  }, [alert.type]);
+  }, [alert.type, dispatch]);
+
+  // Pull selected user from DB
+  useEffect(() => {
+    if (
+      typeof users.items !== "undefined" &&
+      typeof selectedUser.userKey !== "undefined"
+    ) {
+      const userKey = selectedUser.userKey;
+      const savedSelected = Object.assign(users.items[userKey], {
+        userKey: userKey,
+      });
+      setSelectedUser(savedSelected);
+    }
+  }, [users, selectedUser.userKey]);
 
   function handleSelectUser(e) {
-    e.preventDefault();
     if (e.target.id !== "userListReset") {
-      setSelectedUser(users.items[e.target.id]);
-      const selectedUserId = users.items[e.target.id].id;
+      const userKey = e.target.id;
+      setSelectedUser((selectedUser) => ({
+        ...selectedUser,
+        userKey: userKey,
+      }));
+      const userId = users.items[e.target.id].id;
       setUser((user) => ({
         ...user,
-        id: selectedUserId,
+        id: userId,
       }));
     } else {
       setSelectedUser({});
@@ -73,8 +91,8 @@ function UserAccountsPage() {
         ...user,
         id: "",
       }));
+      dispatch(alertActions.clear());
     }
-    dispatch(alertActions.clear());
   }
 
   function handleChange(e) {
@@ -84,12 +102,12 @@ function UserAccountsPage() {
 
   function handleSubmit(e) {
     e.preventDefault();
+    dispatch(alertActions.clear());
     dispatch(userActions.update(user));
   }
 
-  function handleDeleteUser(e) {
-    e.preventDefault();
-    console.log(e.target);
+  function handleDeleteUser(id) {
+    dispatch(userActions.delete(id));
   }
 
   return (
