@@ -7,16 +7,15 @@ User login boilerplate using MERN stack. With the template you are able to sign 
 
 ## Quick start
 
-    - Server side running at `http://localhost:8000`
+- Server side running at `http://localhost:8000`
 
-    - Client side running at `http://localhost:3000`
+- Client side running at `http://localhost:3000`
 
 Create new DB useing [MongoDB](https://www.mongodb.com/) and get the URI to connect. Duplicate the `configSample.json` file and rename it to `config.json`. Update the config file with with your DB URI, strong password (50+ characters) for [JWT](https://jwt.io/) Secret and the email address of the Super Admin.
 
 ### `yarn start`
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Runs the app in the development mode. Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 ## Reference docs
 
