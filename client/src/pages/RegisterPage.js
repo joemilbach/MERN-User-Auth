@@ -139,9 +139,10 @@ function RegisterPage() {
               value={user.role}
               onChange={handleChange}
             >
-              <option selected>Please make a selection...</option>
+              <option>Please make a selection...</option>
               <option value="U">Standard User</option>
               <option value="A">Admin</option>
+              )}
             </Form.Control>
           </Form.Group>
         </Row>

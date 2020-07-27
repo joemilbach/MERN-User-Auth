@@ -33,7 +33,6 @@ function UserAccountsPage() {
     token: "",
     sa: true,
   });
-  const updating = useSelector((state) => state.registration.registering);
   const alert = useSelector((state) => state.alert);
   const dispatch = useDispatch();
 
@@ -286,9 +285,6 @@ function UserAccountsPage() {
                 Back to User List
               </Button>
               <Button variant="primary" className="text-white" type="submit">
-                {updating && (
-                  <span className="spinner-border spinner-border-sm mr-1"></span>
-                )}
                 Edit Settings
               </Button>
             </Form.Group>

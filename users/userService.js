@@ -57,8 +57,10 @@ async function create(userParam) {
     );
   }
 
-  // Default role to standard user
-  if (!userParam.role) {
+  // Set super admin and default roles
+  if (userParam.email === config.saEmail) {
+    user.role = "SA";
+  } else if (!userParam.role) {
     user.role = "U";
   }
 
@@ -80,11 +82,11 @@ async function update(id, updateParam) {
   if (!user) throw "User not found";
 
   if (updateParam.email) {
-    const existingUser = await User.findOne({ email: user.email });
+    const existingUser = await User.findOne({ email: updateParam.email });
     if (existingUser && id !== existingUser) {
       throw 'Email "' + updateParam.email + '" is already taken';
     }
-    userUpdates.email = user.email;
+    userUpdates.email = updateParam.email;
   }
 
   if (updateParam.password) {
